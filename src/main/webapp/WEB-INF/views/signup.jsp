@@ -29,14 +29,16 @@
               </div>
 
               <h1 class="text-center">Register Here !!</h1>
-              <form:form action="do-register" method="post" modelAttribute="user" value="${user}">
+              <form:form action="do-register" method="post" modelAttribute="user" >
 
                 <!--Name Field -->
                 <div class="mb-3 form-group">
-                  <label for="name_field" >Name</label>
-                  <form:input type="text" path="name" value="${user.name}" class="form-control" id="name_field"
-                  aria-describedby="emailHelp" placeholder="Enter here" />
-                  <form:errors path="name" cssClass="text-danger"/>
+                  <spring:bind path="user.name">
+                    <label for="name_field" >Name</label>
+                    <form:input type="text" path="name" value="${user.name}"  class="form-control" id="name_field"
+                    aria-describedby="emailHelp" placeholder="Enter here" />
+                    <form:errors path="name" cssClass="text-danger"/>
+                  </spring:bind>
                 </div>
 
                 <!--Email Field -->
@@ -65,7 +67,16 @@
 
                 <!--Terms and condition agreement -->
                  <div class="form-group form-check text-center">
-                   <input class="form-check-input" path="agreement" type="checkbox" name="agreement" id="agreement" />
+                   <c:choose>
+                     <c:when test="${not empty sessionScope.termsChecked}">
+                       <input class="form-check-input" path="agreement" type="checkbox" name="agreement"
+                        id="agreement" checked />
+                     </c:when>
+                     <c:otherwise>
+                       <input class="form-check-input" path="agreement" type="checkbox" name="agreement"
+                        id="agreement"/>
+                     </c:otherwise>
+                   </c:choose>
                    <label for="agreement">
                      Accept terms and conditions
                    </label>
@@ -83,5 +94,10 @@
         </div>
       </div>
     </section>
+
+   <script>
+
+   </script>
+
   </body>
 </html>
