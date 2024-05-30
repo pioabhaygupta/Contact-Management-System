@@ -56,3 +56,10 @@ display:flex;
   font-size: 36px;
   cursor: pointer;
 }
+.contact-profile-picture{
+  width: 35px;
+  height: 35px;
+  border: 1px solid black;
+  border-radius: 50%;
+  object-fit: cover;
+}

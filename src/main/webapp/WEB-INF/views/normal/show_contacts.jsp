@@ -11,8 +11,20 @@
   <body>
     <section class="content mt-5">
       <i onclick="toggleSidebar()" id="menu" class="material-symbols-outlined mt-2">menu </i>
-      <div class="card">
+      <c:if test="${not empty sessionScope.message}">
+        <div class="alert ${sessionScope.message.type} text-center" role="alert">
+          <p>${sessionScope.message.content}</p>
+          <c:remove var="message" scope="session" />
+        <div>
+       </c:if>
+      <div class="card ">
         <div class="card-body">
+        <c:if test="${not empty sessionScope.message}">
+          <div class="alert ${sessionScope.message.type} text-center" role="alert">
+            <p>${sessionScope.message.content}</p>
+            <c:remove var="message" scope="session" />
+          <div>
+         </c:if>
          <h1 class="text-center"> View Contacts </h1>
 
           <!--User Contacts Table-->
@@ -29,13 +41,26 @@
             <tbody>
               <c:forEach items="${contacts}" var="contact">
                 <tr>
-                  <td>SCM2024${contact.id}</td>
-                  <td>${contact.name}</td>
-                  <td>${contact.email}</td>
-                  <td>${contact.phone}</td>
+                  <td>SCM${contact.id}</td>
+
                   <td>
-                    <button class="btn btn-info btn-sm">Update</button>
-                    <button class="btn btn-danger btn-sm">Delete</button>
+                    <a href="/user/${contact.id}/contact">
+                      <img class="contact-profile-picture" src="data:image/jpg;base64,${contact.image}"  />
+                    </a>
+                    <span>${contact.name}</span>
+                  </td>
+
+                  <td>${contact.email}</td>
+
+                  <td>${contact.phone}</td>
+
+                  <td>
+                    <form action="/user/update-contact/${contact.id}" method="post" class="mb-2">
+                      <button type="submit" class="btn btn-info btn-sm">Update</button>
+                    </form>
+                    <a href="#" onclick="deleteContact(${contact.id})">
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </a>
                   </td>
                 </tr>
               </c:forEach>

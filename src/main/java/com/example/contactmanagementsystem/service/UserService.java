@@ -14,5 +14,11 @@ public interface UserService {
 
     void processContact(Contact contact, String base64EncodedImage, User user);
 
-    Page<Contact> findbyUserId(int id, Pageable pageable);
+    Page<Contact> getUserContacts(int id, Pageable pageable);
+
+    Contact getContactById(int id);
+
+    void deleteContact(int id, User user);
+
+    void processUpdate(Contact contact, User user);
 }

@@ -69,6 +69,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <script>
       const toggleSidebar = () => {
         if($(".sidebar").is(":visible")){
@@ -79,7 +81,25 @@
           $(".content").css("margin-left", "20%");
         }
       }
+    </script>
 
+    <script>
+      function deleteContact(id){
+        swal({
+          title: "Are you sure?",
+          text: "You want to delete this contact!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            window.location="/user/delete/"+id;
+          } else {
+            swal("Your contact is safe!");
+          }
+        });
+      }
     </script>
   </body>
 </html>
