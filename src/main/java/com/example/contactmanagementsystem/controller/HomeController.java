@@ -1,16 +1,14 @@
 package com.example.contactmanagementsystem.controller;
 
 import com.example.contactmanagementsystem.entities.User;
+import com.example.contactmanagementsystem.exception.AgreementNotCheckedException;
 import com.example.contactmanagementsystem.helper.Message;
 import com.example.contactmanagementsystem.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -28,27 +26,28 @@ public class HomeController {
     public String home() {
         return "home";
     }
+
     @RequestMapping("/signup")
-    public String signup(Model model){
-        model.addAttribute("user",new User());
+    public String signup(Model model) {
+        model.addAttribute("user", new User());
         return "signup";
     }
-    @RequestMapping("/login")
-    public String login(){
-        return "login";
-    }
+
     @RequestMapping("/about")
-    public String about(){
+    public String about() {
         return "about";
     }
+
+    //Handler to register the user
     @PostMapping("/do-register")
     public String doRegister(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, @RequestParam(value = "agreement", defaultValue = "false")
     boolean agreement, Model model, HttpSession session) {
         try {
             if (!agreement) {
-                throw new RuntimeException("Please check the terms and condition!!");
+                throw new AgreementNotCheckedException("Please check the terms and condition!!");
             }
             if (bindingResult.hasErrors()) {
+                session.setAttribute("termsChecked","checked");
                 model.addAttribute("user", user);
                 return "signup";
             }
@@ -66,6 +65,13 @@ public class HomeController {
             return "signup";
         }
         return "signup";
+    }
+
+
+    @RequestMapping("/login")
+    public String customLogin(Model model) {
+        model.addAttribute("title","login page");
+        return "login";
     }
 
 }

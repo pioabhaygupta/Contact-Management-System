@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
   <head>
@@ -9,16 +11,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <link rel="stylesheet" type="text/css" href="../../../resources/static/style.css" >
-    <title>Contact Manager</title>
-    <style> <%@include file="/WEB-INF/static/css/style.css"%> </style>
-
+    <title>${title}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,300,0,0" />    <style> <%@include file="/WEB-INF/static/css/user_dashboard.css"%> </style>
   </head>
   <body>
 
     <!--navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <button class="navbar-toggler" type="button"
         data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
@@ -33,19 +32,33 @@
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="login">Login</a>
+              <a class="nav-link active" href="#">${user.name}</a>
             </li>
              <li class="nav-item">
-              <a class="nav-link active" href="signup">SignUp</a>
+              <a class="nav-link active" href="/logout">Logout</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
     <!--End of navbar -->
+
+    <!--Start of the sidebar -->
+    <div class="sidebar mt-2">
+
+      <span onclick="toggleSidebar()" class="crossBtn">&times;</span>
+      <a href="/user/dashboard" class="item" id='item1'>
+        <span id="icon" class="material-symbols-outlined">home</span>
+        Home</a>
+      <a href="/user/show-contacts/0" class="item">View Contacts</a>
+      <a href="/user/add-contact" class="item">Add Contact</a>
+      <a href="#" class="item">Your Profile</a>
+      <a href="#" class="item">Setting</a>
+      <a href="#" class="item">Logout</a>
+      <div class="divider"></div>
+    </div>
+    <!--End of the sidebar -->
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -56,6 +69,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <script src="${pageContext.request.contextPath}/static/js/action.js"></script>
+    <script>
+      const toggleSidebar = () => {
+        if($(".sidebar").is(":visible")){
+          $(".sidebar").css("display", "none");
+          $(".content").css("margin-left", "0%");
+        }else{
+          $(".sidebar").css("display", "block");
+          $(".content").css("margin-left", "20%");
+        }
+      }
+
+    </script>
   </body>
 </html>

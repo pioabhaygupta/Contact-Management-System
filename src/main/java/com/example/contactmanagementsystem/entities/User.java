@@ -17,7 +17,8 @@ public class User {
     @Email(message = "Enter valid email!")
     @NotBlank(message = "Email cannot be NULL!")
     private String email;
-    @Pattern(regexp = "^[a-zA-Z0-9]{8}",message = "length must be 8!")
+
+//    @Pattern(regexp = "^[a-zA-Z0-9]{8}",message = "length must be 8!")
     private String password;
     private String role;
     private boolean enabled;
