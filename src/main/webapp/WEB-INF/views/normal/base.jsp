@@ -34,6 +34,9 @@
             <li class="nav-item">
               <a class="nav-link active" href="#">${user.name}</a>
             </li>
+            <li class="nav-item">
+              <img  class="contact-profile-picture mt-1" src="data:image/jpg;base64,${user.imageUrl}" />
+            </li>
              <li class="nav-item">
               <a class="nav-link active" href="/logout">Logout</a>
             </li>
@@ -45,16 +48,19 @@
 
     <!--Start of the sidebar -->
     <div class="sidebar mt-2">
-
-      <span onclick="toggleSidebar()" class="crossBtn">&times;</span>
-      <a href="/user/dashboard" class="item" id='item1'>
-        <span id="icon" class="material-symbols-outlined">home</span>
-        Home</a>
-      <a href="/user/show-contacts/0" class="item">View Contacts</a>
-      <a href="/user/add-contact" class="item">Add Contact</a>
-      <a href="#" class="item">Your Profile</a>
-      <a href="#" class="item">Setting</a>
-      <a href="#" class="item">Logout</a>
+      <div>
+        <span onclick="toggleSidebar()" class="crossBtn">&times;</span>
+      </div>
+      <a href="/user/dashboard" class="item active" id="home-link">Home</a>
+      <a href="/user/show-contacts/0" id="view-link" class="item">View Contacts</a>
+      <a href="/user/add-contact" id="add-link" class="item">Add Contact</a>
+      <a href="/user/profile" id="profile-link" class="item">Your Profile</a>
+      <a href="#" id="setting-link" class="item" onclick="toggleSettingDropdown()">Setting</a>
+      <ul id="setting-dropdown" style="display: none;">
+        <li><a href="/user/edit-profile" class="item">Edit Profile</a></li>
+        <li><a href="/user/change-password" class="item">Change Password</a></li>
+      </ul>
+      <a href="/logout" id="logout-link" class="item">Logout</a>
       <div class="divider"></div>
     </div>
     <!--End of the sidebar -->
@@ -62,12 +68,16 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
       const toggleSidebar = () => {
@@ -76,10 +86,79 @@
           $(".content").css("margin-left", "0%");
         }else{
           $(".sidebar").css("display", "block");
-          $(".content").css("margin-left", "20%");
+          $(".content").css("margin-left", "18%");
         }
       }
 
+      const toggleSidebarForDashboard = () => {
+        if($(".sidebar").is(":visible")){
+          $(".sidebar").css("display", "none");
+          $(".content").css("margin-left", "0%");
+
+        }else{
+          $(".sidebar").css("display", "block");
+          $(".content").css("margin-left", "18%");
+        }
+      }
+
+
+      function toggleSettingDropdown() {
+          const dropdown = document.getElementById("setting-dropdown");
+
+          if (dropdown.style.display === "none") {
+            dropdown.style.display = "block";
+             $(".item").removeClass("active");
+             $("#setting-link").addClass("active");
+          }
+        }
+
+    </script>
+
+    <script type="text/javascript">
+          $(document).ready(function(){
+            $("#search-input").on("keyup",function(){
+              var query = $(this).val();
+              if(query.length > 0) {
+                $.ajax({
+                  url: '/search',
+                  method: 'GET',
+                  data: { query: query},
+                  dataType: 'json',
+                  success: function(data) {
+                    var resultHtml = "<div class='list-group'>";
+                    $.each(data, function(index, contact){
+                      var contactUrl = '/user/' + contact.id + '/contact';
+                      resultHtml += "<a href='" + contactUrl + "' class='list-group-item list-group-item-action'>" + contact.name + "</a>";
+
+                    });
+                    resultHtml+="</div>";
+                    $("#search-result").html(resultHtml);
+                  }
+                });
+              }else {
+                $("#search-result").empty();
+              }
+            });
+          });
+        </script>
+
+    <script>
+      function deleteContact(id){
+        swal({
+          title: "Are you sure?",
+          text: "You want to delete this contact!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            window.location="/user/delete/"+id;
+          } else {
+            swal("Your contact is safe!");
+          }
+        });
+      }
     </script>
   </body>
 </html>

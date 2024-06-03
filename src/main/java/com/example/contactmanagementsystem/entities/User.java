@@ -22,6 +22,7 @@ public class User {
     private String password;
     private String role;
     private boolean enabled;
+    @Column(columnDefinition = "LONGTEXT")
     private String imageUrl;
     @Column(length = 500)
     private String about;

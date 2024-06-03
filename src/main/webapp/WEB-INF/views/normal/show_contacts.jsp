@@ -9,38 +9,71 @@
     <title>${title}</title>
   </head>
   <body>
-    <section class="content mt-5">
+    <section class="content mt-5 ">
       <i onclick="toggleSidebar()" id="menu" class="material-symbols-outlined mt-2">menu </i>
-      <div class="card">
-        <div class="card-body">
-         <h1 class="text-center"> View Contacts </h1>
+      <div>
+        <c:if test="${not empty sessionScope.message}">
+          <div class="alert ${sessionScope.message.type} text-center" role="alert">
+            <p>${sessionScope.message.content}</p>
+            <c:remove var="message" scope="session" />
+          <div>
+         </c:if>
+       <div>
+      <div class="card mr-3 ml-3">
+        <div class="card-body ">
+          <h1 class="text-center"> View Contacts </h1>
+
+          <!--Search Contact-->
+          <div class="search-container my-3">
+            <input type="text" id="search-input" class="form-control" placeholder="Search your contacts"  />
+              <div id="search-result">
+
+              </div>
+          </div>
 
           <!--User Contacts Table-->
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">phone</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <c:forEach items="${contacts}" var="contact">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="thead-dark">
                 <tr>
-                  <td>SCM2024${contact.id}</td>
-                  <td>${contact.name}</td>
-                  <td>${contact.email}</td>
-                  <td>${contact.phone}</td>
-                  <td>
-                    <button class="btn btn-info btn-sm">Update</button>
-                    <button class="btn btn-danger btn-sm">Delete</button>
-                  </td>
+                  <th scope="col">#ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">phone</th>
+                  <th scope="col">Action</th>
                 </tr>
-              </c:forEach>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <c:forEach items="${contacts}" var="contact">
+                  <tr>
+                    <td>SCM${contact.id}</td>
+
+                    <td>
+                      <a href="/user/${contact.id}/contact">
+                        <img class="contact-profile-picture" src="data:image/jpg;base64,${contact.image}"  />
+                      </a>
+                      <span>${contact.name}</span>
+                    </td>
+
+                    <td>${contact.email}</td>
+
+                    <td>${contact.phone}</td>
+
+                    <td>
+                      <div id="button-container">
+                        <form action="/user/update-contact/${contact.id}" method="post" class="mb-2">
+                          <button type="submit" class="btn btn-info btn-sm mr-3">Update</button>
+                        </form>
+                        <a href="#" onclick="deleteContact(${contact.id})">
+                          <button class="btn btn-danger btn-sm">Delete</button>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </c:forEach>
+              </tbody>
+            </table>
+          </div>
 
           <!--Pagination-->
 
@@ -68,6 +101,13 @@
 
         </div>
       </div>
+      <script>
+        $(document).ready(() =>{
+          $(".item").removeClass("active");
+          $("#view-link").addClass("active");
+        });
+      </script>
     </section>
+
   </body>
 </html>

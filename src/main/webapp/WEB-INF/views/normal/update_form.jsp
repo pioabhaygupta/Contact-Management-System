@@ -14,20 +14,14 @@
 
       <div class="card mr-5 ml-5">
         <div class="card-body">
-          <h1 class="text-center">Add Contact</h1>
+          <h1 class="text-center">Update Your Contact</h1>
 
-          <!-- Alert message -->
-          <c:if test="${not empty sessionScope.message}" >
-            <div class="alert ${sessionScope.message.type} text-center ml-4 mr-4" role="alert">
-              <p>${sessionScope.message.content}</p>
-              <c:remove var="message" scope="session"/>
-            </div>
-          </c:if>
-          <div class="container-fluid mt-1 mr-3">
+          <div class="container-fluid mt-3 mr-3">
             <div class="row">
               <div class="col-md-8 offset-md-2">
-                <form action="/user/process-contact"  enctype="multipart/form-data" method="post">
+                <form action="/user/process-update"  enctype="multipart/form-data" method="post">
 
+                  <input type="hidden" value="${contact.id}" name="id" />
                   <!-- Contact Name -->
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -70,11 +64,18 @@
 
                   <!--Description Field -->
                   <div class="form-floating mb-3">
-                    <textarea name="description"  value="${contact.description}" class="form-control"
+                    <textarea name="description"  text="${contact.description}" class="form-control"
                     placeholder="Enter Contact Description " id="floatingTextarea"></textarea>
                   </div>
 
                   <!--Image field -->
+                  <!--old Image -->
+                  <div class="text-center">
+                    <img style="width: 200px; height: 200px;" class="contact-profile-picture"
+                    src="data:image/jpg;base64,${contact.image}" alt="Base64 Image" />
+                  </div>
+                  <input type="hidden" value="${contact.image}" name="image">
+                  <!--Uploading new Image -->
                   <div class="custom-file mb-3">
                     <input class="form-control" name="imageFile" type="file" id="formFile">
                   </div>
@@ -90,13 +91,6 @@
         </div>
       </div>
     </div>
-
-    <script>
-      $(document).ready(() =>{
-        $(".item").removeClass("active");
-        $("#add-link").addClass("active");
-      });
-    </script>
 
   </body>
 </html>
