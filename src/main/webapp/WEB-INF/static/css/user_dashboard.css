@@ -40,14 +40,14 @@
    background: #e2e2e2;
    margin-top: 10px;
 }
-#item1{
+#item{
 display:flex;
 }
 #icon{
  height: 100% ;
 }
 .content{
-  margin-left:20%;
+  margin-left:18%;
 }
 .sidebar .crossBtn{
   position: absolute;
@@ -62,4 +62,48 @@ display:flex;
   border: 1px solid black;
   border-radius: 50%;
   object-fit: cover;
+}
+.button-container{
+  display: flex;
+  gap: 10 px ;
+  justify-content: center;
+}
+.button-container form, .button-container a{
+  margin 0;
+}
+#button-container{
+  display: flex;
+}
+#content{
+  height: 100vh;
+  background-image:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+  url(https://website-assets-fw.freshworks.com/attachments/cjuwek45n01w4ztg0bh9cvq4q-contact-management-software.one-half.png);
+  background-size:cover;
+}
+.dashboard{
+  width: 60%;
+  margin-top:6%;
+}
+
+#card radius
+.cr{
+  border-radius: 4%;
+  border-style: solid;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.7);
+}
+
+/*Search css*/
+.search-container{
+  position: relative;
+}
+#search-result{
+  position: absolute;
+  background: white;
+  width: 100%;
+  padding: 10px;
+  /*border: 1px solid gray;*/
+}
+.active{
+  background: #0a6a79!important;
+  color: white!important;
 }

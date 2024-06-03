@@ -79,8 +79,7 @@ public class UserController {
 
             session.setAttribute("message", new Message("Your Contact added successfully !! Add More.... ", "alert-success"));
             model.addAttribute("contact", new Contact());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             model.addAttribute("contact", contact);
             session.setAttribute("message", new Message("Something went wrong !! " + e.getMessage(), "alert-danger"));
             return "normal/add_contact_form";
@@ -99,8 +98,8 @@ public class UserController {
         User user = userService.getUser(email);
 
         //current page :- page
-        //contact per page:- 3
-        Pageable pageable = PageRequest.of(page, 3);
+        //contact per page:- 4
+        Pageable pageable = PageRequest.of(page, 4);
 
         //Fetching the user contact list with the help of user id
         Page<Contact> contactList = userService.getUserContacts(user.getId(), pageable);
@@ -131,8 +130,7 @@ public class UserController {
                 throw new UnauthorizedAccessException("You don't have permission to see this contact..");
             }
             model.addAttribute("contact", contact);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
             return "normal/contact_detail";
         }
@@ -180,13 +178,66 @@ public class UserController {
                 contact.setImage(base64EncodedImage);
             }
             User user = userService.getUser(principal.getName());
-            userService.processUpdate(contact,user);
-            session.setAttribute("message",new Message("Contact Updated Successfully!!","alert-success"));
+            userService.processUpdate(contact, user);
+            session.setAttribute("message", new Message("Contact Updated Successfully!!", "alert-success"));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return "redirect:/user/show-contacts/"+currentPage;
+        return "redirect:/user/show-contacts/" + currentPage;
     }
 
+    @GetMapping("/profile")
+    public String yourProfile(Model model) {
+        model.addAttribute("title", "Your Profile");
+        return "normal/profile";
+    }
+
+    //open change password form handler
+    @GetMapping("/change-password")
+    public String changePasswordForm(Model model) {
+        model.addAttribute("title", "Change Password");
+        return "normal/change_pass";
+    }
+
+ //Update password
+    @RequestMapping(path = "/process-password", method = RequestMethod.POST)
+    public String processPassword(@RequestParam("oldPassword") String oldPassword
+            , @RequestParam("newPassword") String newPassword, Principal principal, HttpSession session) {
+
+        try{
+            User currentUser = userService.getUser(principal.getName());
+            userService.processPassword(oldPassword,newPassword, currentUser);
+            session.setAttribute("message",new Message("Your password is successfully changed!!", "alert-success"));
+
+        } catch (Exception e) {
+            session.setAttribute("message",new Message(e.getMessage(),"alert-danger"));
+            return "redirect:/user/change-password";
+        }
+        return "redirect:/user/change-password";
+    }
+
+    @GetMapping("/edit-profile")
+    public String editProfileForm(Model model) {
+        model.addAttribute("title", "Update Profile");
+        return "normal/edit_profile";
+    }
+
+    @PostMapping("/update-profile")
+    public String updateProfile(@ModelAttribute("user") User user, @RequestParam("imageFile") MultipartFile imageFile
+            , HttpSession session){
+        try{
+            if (!imageFile.isEmpty()) {
+                byte[] bytes = imageFile.getBytes();
+                String base64EncodedImage = Base64.getEncoder().encodeToString(bytes);
+                user.setImageUrl(base64EncodedImage);
+            }
+            userService.updateProfile(user);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/user/edit-profile";
+
+    }
 }

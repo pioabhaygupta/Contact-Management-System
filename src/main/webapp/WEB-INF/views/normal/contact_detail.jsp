@@ -47,9 +47,11 @@
                 </tbody>
               </table>
 
-              <div class="container mt-3 ">
-                <button class="btn btn-info btn-sm mr-3">Update</button>
+              <div class="container mt-3 button-container">
 
+                <form action="/user/update-contact/${contact.id}" method="post" class="mb-2 ">
+                  <button type="submit" class="btn btn-info btn-sm mr-3">Update</button>
+                </form>
                 <a href="#" onclick="deleteContact(${contact.id})">
                   <button class="btn btn-danger btn-sm mr-3">Delete</button>
                 </a>

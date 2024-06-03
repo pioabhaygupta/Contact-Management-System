@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title></title>
+    <title>${title}</title>
   </head>
   <body>
     <div class="content mt-5">
@@ -90,6 +90,13 @@
         </div>
       </div>
     </div>
+
+    <script>
+      $(document).ready(() =>{
+        $(".item").removeClass("active");
+        $("#add-link").addClass("active");
+      });
+    </script>
 
   </body>
 </html>

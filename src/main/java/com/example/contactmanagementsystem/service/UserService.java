@@ -21,4 +21,10 @@ public interface UserService {
     void deleteContact(int id, User user);
 
     void processUpdate(Contact contact, User user);
+
+    List<Contact> searchContact(String query, User user);
+
+    void processPassword(String oldPassword, String newPassword, User currentUser);
+
+    void updateProfile(User user);
 }

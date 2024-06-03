@@ -4,6 +4,7 @@ import com.example.contactmanagementsystem.entities.Contact;
 import com.example.contactmanagementsystem.entities.User;
 import com.example.contactmanagementsystem.exception.ContactNotFoundException;
 import com.example.contactmanagementsystem.exception.DuplicateEntryException;
+import com.example.contactmanagementsystem.exception.PasswordMismatchException;
 import com.example.contactmanagementsystem.exception.UnauthorizedAccessException;
 import com.example.contactmanagementsystem.repository.ContactRepository;
 import com.example.contactmanagementsystem.repository.UserRepository;
@@ -84,5 +85,25 @@ public class UserServiceImpl implements UserService {
     public void processUpdate(Contact contact, User user) {
         contact.setUser(user);
         contactRepository.save(contact);
+    }
+
+    @Override
+    public List<Contact> searchContact(String query, User user) {
+        return contactRepository.findByNameContainingAndUser(query,user);
+    }
+
+    @Override
+    public void processPassword(String oldPassword, String newPassword, User currentUser) {
+        if(passwordEncoder.matches(oldPassword,currentUser.getPassword())){
+            currentUser.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(currentUser);
+        }else{
+            throw new PasswordMismatchException("Given password is wrong!");
+        }
+    }
+
+    @Override
+    public void updateProfile(User user) {
+        userRepository.save(user);
     }
 }
