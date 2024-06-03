@@ -15,7 +15,7 @@
       <div class="container ">
         <div class="card">
           <div class="card-body text-center">
-            <img style="height: 180px; width: 180px;" class="contact-profile-picture " src="data:image/jpg;base64,${contact.image}" />
+            <img style="height: 180px; width: 180px;" class="contact-profile-picture " src="data:image/jpg;base64,${user.imageUrl}" />
             <h2 class="mt-3 mb-3 "><span>${user.name}</span></h2>
             <table class="table text-center">
               <thead>

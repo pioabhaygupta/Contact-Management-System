@@ -34,6 +34,9 @@
             <li class="nav-item">
               <a class="nav-link active" href="#">${user.name}</a>
             </li>
+            <li class="nav-item">
+              <img  class="contact-profile-picture mt-1" src="data:image/jpg;base64,${user.imageUrl}" />
+            </li>
              <li class="nav-item">
               <a class="nav-link active" href="/logout">Logout</a>
             </li>

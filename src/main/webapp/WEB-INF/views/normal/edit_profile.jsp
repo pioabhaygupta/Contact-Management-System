@@ -40,7 +40,7 @@
 
                   <!--About Field -->
                   <div class="form-floating mb-3">
-                    <textarea name="description"  defaultValue="${user.about}" class="form-control"
+                    <textarea name="about"  defaultValue="${user.about}" class="form-control"
                     placeholder="Enter something about yourself" id="floatingTextarea"><c:out value="${user.about}" /></textarea>
                   </div>
 
@@ -57,7 +57,7 @@
                   </div>
 
                   <div class="container text-center">
-                    <button class="btn btn-outline-primary">Update</button>
+                    <button type="submit" class="btn btn-outline-primary">Update</button>
                   </div>
 
                 </form>
