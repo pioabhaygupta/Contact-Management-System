@@ -27,4 +27,6 @@ public interface UserService {
     void processPassword(String oldPassword, String newPassword, User currentUser);
 
     void updateProfile(User user);
+
+    void changePassword(User user, String password);
 }

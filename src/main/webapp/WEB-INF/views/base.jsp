@@ -57,5 +57,23 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script src="${pageContext.request.contextPath}/static/js/action.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var showAlert = '<%= session.getAttribute("message") %>';
+
+            if (showAlert!=null) {
+                <!--Show the alert -->
+                var alertContainer = document.getElementById("myAlert");
+                alertContainer.style.display = "block";
+
+                <!--Hide the alert after 2 seconds -->
+                setTimeout(function() {
+                    alertContainer.style.display = "none";
+                }, 3000);
+            }
+        });
+    </script>
+
   </body>
 </html>

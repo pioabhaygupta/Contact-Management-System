@@ -21,7 +21,7 @@
               <!--Alert Message -->
               <div>
                 <c:if test="${not empty sessionScope.message}">
-                  <div class="alert ${sessionScope.message.type} text-center" role="alert">
+                  <div id="myAlert" class="alert ${sessionScope.message.type} text-center" role="alert">
                     <p>${sessionScope.message.content}</p>
                     <c:remove var="message" scope="session" />
                   </div>

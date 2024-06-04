@@ -12,10 +12,10 @@
 .my-card{
   padding:20px;
   border: 2px solid black;
-  margin-top: 20px;
+  margin-top: 30px;
   border-radius:5px;
   border: 1px solid #9C9C9C;
-  background-color: #EAEAEA;
+  background-color: rgb(178, 207, 239);
 }
 
 #login .container #login-row #login-column #login-box {
@@ -23,9 +23,9 @@
   height:380px;
   border-radius:5px;
   border: 1px solid #9C9C9C;
-  background-color: #EAEAEA;
-  color: black;
+  background-color: rgb(178, 207, 239);
 }
+
 #login{
 height: 90vh;
 }
