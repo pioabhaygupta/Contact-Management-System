@@ -32,11 +32,16 @@ pageEncoding="UTF-8" %>
                   <form id="forgot-form" class="form" action="/verify-otp" method="post">
 
                     <div class="form-group">
-                      <input type="text" name="otp" id="otp" class="form-control" placeholder="Enter OTP here" required>
+                      <input type="text" name="otp" id="otp" class="form-control" placeholder="Enter OTP here"  required>
+                      <div class="text-center">
+                        <span  class="">Remaining Time: </span>
+                        <span id="countdown" class=""> </span>
+                      </div>
                     </div>
 
                     <div class="container text-center">
                       <button class="btn btn-warning">Verify OTP</button>
+                      <a href="/forgot" class="btn btn-info">Resend OTP</a>
                     </div>
 
                   </form>
@@ -46,5 +51,37 @@ pageEncoding="UTF-8" %>
           </div>
       </div>
     </section>
+
+    <script type="text/javascript">
+
+      // Strating countdown at the time of webpage loading
+      window.onload = function () {
+          var twoMinutes = 60*2; //in second
+          var display = document.getElementById('countdown');
+          startCountdown(twoMinutes,display);
+      }
+
+      function startCountdown(duration,display) {
+          var timer = duration , minutes, seconds;
+
+          // Updating countdown every 1 second  setInterval(function,time In Millisecond)
+          var countdownInterval = setInterval(function(){
+            minutes = Math.floor(timer/60);
+            seconds = timer%60;
+
+            // Formatting minutes and seconds
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            // Display
+            display.textContent = minutes + ":" + seconds ;
+
+            if(--timer < 0){
+              clearInterval(countdownInterval);
+              display.textContent = "OTP has expired!"
+            }
+          }, 1000);
+      }
+    </script>
   </body>
 </html>

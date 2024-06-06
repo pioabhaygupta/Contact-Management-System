@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Random;
 
@@ -99,6 +103,7 @@ public class HomeController {
             }
             //generating 4 digit otp to reset the password
             int otp = random.nextInt(9999);
+            LocalDateTime timestamp = LocalDateTime.now();
             log.info("OTP: {}", otp);
 
             String subject = "One Time Password for Verification SCM";
@@ -110,24 +115,34 @@ public class HomeController {
 
             emailService.sendEmailToUser(email, subject, body);
             session.setAttribute("otp", otp);
-            session.setAttribute("email",email);
+            session.setAttribute("email", email);
+            session.setAttribute("timestamp", timestamp);
 
         } catch (Exception e) {
             session.setAttribute("message", new Message(e.getMessage(), "alert-danger"));
             return "redirect:/forgot";
         }
-        session.setAttribute("message",new Message("We have sent an OTP to your registered email id!","alert-success"));
+        session.setAttribute("message", new Message("We have sent an OTP to your registered email id!", "alert-success"));
         return "verify_otp";
     }
 
     @PostMapping("/verify-otp")
     public String verifyOtp(@RequestParam("otp") Integer otp, HttpSession session) {
         Integer myOtp = (Integer) session.getAttribute("otp");
-        String email = (String) session.getAttribute("email");
 
+        LocalDateTime currentTimestamp = LocalDateTime.now();
+        LocalDateTime otpTimestamp = (LocalDateTime) session.getAttribute("timestamp");
+
+        Duration duration = Duration.between(otpTimestamp, currentTimestamp);
+        log.info("duration:{}", duration);
+
+        if (duration.toMinutes() > 2) {
+            session.setAttribute("message", new Message("OTP has expired!", "alert-warning"));
+            return "verify_otp";
+        }
         //check whether form otp is matching with sent otp or not
-        if(!Objects.equals(myOtp, otp)){
-            session.setAttribute("message",new Message("Entered OTP is wrong ! Please try again...","alert-danger"));
+        if (!Objects.equals(myOtp, otp)) {
+            session.setAttribute("message", new Message("Entered OTP is wrong ! Please try again...", "alert-danger"));
             return "verify_otp";
         }
         return "change_password_form";
@@ -135,24 +150,22 @@ public class HomeController {
     }
 
     @PostMapping("/change-password")
-    public String changePassword(@RequestParam("password") String password,@RequestParam("confirmPassword") String confirmPassword
-            , HttpSession session){
+    public String changePassword(@RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword
+            , HttpSession session) {
         try {
             String email = (String) session.getAttribute("email");
             //Fetching the current user to reset the password by email
             User user = userService.getUser(email);
-            if(!password.equals(confirmPassword)){
+            if (!password.equals(confirmPassword)) {
                 throw new PasswordMismatchException("Passwords should be match!");
             }
             userService.changePassword(user, password);
             session.setAttribute("message", new Message("Password Changed Successfully!", "alert-success"));
         } catch (Exception e) {
-            session.setAttribute("message", new Message(e.getMessage(),"alert-danger"));
+            session.setAttribute("message", new Message(e.getMessage(), "alert-danger"));
             return "change_password_form";
         }
         return "change_password_form";
     }
-
-
 
 }
